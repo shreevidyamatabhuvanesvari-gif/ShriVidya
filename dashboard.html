@@ -1,3 +1,62 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪷 ShriVidya Teaching Panel</title>
+
+<style>
+body{
+  background:linear-gradient(135deg,#220033,#550077,#220033);
+  font-family:'Noto Sans Devanagari',sans-serif;
+  color:#fff;
+  text-align:center;
+  margin:0;
+}
+
+#quizPanel{
+  background:rgba(255,255,255,0.15);
+  margin:30px auto;
+  width:90%;
+  max-width:750px;
+  padding:25px;
+  border-radius:16px;
+}
+
+button{
+  background:linear-gradient(90deg,#ff8c00,#ff0066);
+  border:none;
+  padding:10px 16px;
+  color:#fff;
+  border-radius:8px;
+  margin:6px;
+  cursor:pointer;
+}
+
+input{
+  width:90%;
+  padding:8px;
+  margin-top:6px;
+  border-radius:6px;
+  border:none;
+}
+</style>
+</head>
+<body>
+
+<div id="quizPanel">
+<h3>🌺 विषय चुनें:</h3>
+
+<button onclick="openSubject('इतिहास')">इतिहास</button>
+<button onclick="openSubject('विज्ञान')">विज्ञान</button>
+<button onclick="openSubject('सामान्य ज्ञान')">सामान्य ज्ञान</button>
+
+<br><br>
+<button onclick="location.href='dashboard_B.html'">
+🧩 Panel-B (नया टॉपिक जोड़ें)
+</button>
+</div>
+
 <script>
 const fixedTopics={
 "इतिहास":["प्राचीन भारत","मध्यकालीन भारत","आधुनिक भारत"],
@@ -166,3 +225,6 @@ html+=`<button onclick="openTopic('${sub}','${topic}')">⬅️ वापस</but
 quizPanel.innerHTML=html;
 }
 </script>
+
+</body>
+</html>
