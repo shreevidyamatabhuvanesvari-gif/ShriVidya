@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🧩 Topic Builder</title>
+
+<style>
+body{
+background:#220033;
+color:white;
+font-family:'Noto Sans Devanagari',sans-serif;
+text-align:center;
+padding:20px;
+}
+
+input{
+padding:10px;
+width:70%;
+margin:10px;
+border-radius:8px;
+border:none;
+}
+
+button{
+padding:10px 16px;
+margin:6px;
+border:none;
+border-radius:8px;
+background:#ff8c00;
+color:white;
+}
+</style>
+</head>
+<body>
+
+<h2>🧩 नया टॉपिक जोड़ें</h2>
+
+<select id="subject">
+<option>इतिहास</option>
+<option>विज्ञान</option>
+<option>सामान्य ज्ञान</option>
+</select>
+<br>
+
+<input id="topicName" placeholder="नया टॉपिक नाम लिखें">
+
+<br>
+<button onclick="addTopic()">टॉपिक जोड़ें</button>
+<button onclick="goBack()">⬅️ Panel-A</button>
+
+<h3>मौजूदा Custom Topics</h3>
+<div id="list"></div>
+
+<script>
+function addTopic(){
+let sub=subject.value;
+let t=topicName.value.trim();
+
+if(!t)return alert("नाम लिखें");
+
+let key="custom_"+sub;
+let arr=JSON.parse(localStorage.getItem(key)||"[]");
+
+arr.push(t);
+localStorage.setItem(key,JSON.stringify(arr));
+
+alert("Topic add हो गया");
+topicName.value="";
+showList();
+}
+
+function showList(){
+let html="";
+["इतिहास","विज्ञान","सामान्य ज्ञान"].forEach(s=>{
+let arr=JSON.parse(localStorage.getItem("custom_"+s)||"[]");
+if(arr.length){
+html+=`<h4>${s}</h4>`;
+arr.forEach(x=>html+=`<p>${x}</p>`);
+}
+});
+list.innerHTML=html;
+}
+
+function goBack(){
+location.href="dashboard_A.html";
+}
+
+showList();
+</script>
+
+</body>
+</html>
