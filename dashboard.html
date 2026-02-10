@@ -3,228 +3,145 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🪷 ShriVidya Teaching Panel</title>
+<title>Teaching Panel</title>
 
 <style>
 body{
-  background:linear-gradient(135deg,#220033,#550077,#220033);
-  font-family:'Noto Sans Devanagari',sans-serif;
-  color:#fff;
-  text-align:center;
-  margin:0;
+background:linear-gradient(135deg,#220033,#550077,#220033);
+color:white;text-align:center;font-family:sans-serif;
 }
-
-#quizPanel{
-  background:rgba(255,255,255,0.15);
-  margin:30px auto;
-  width:90%;
-  max-width:750px;
-  padding:25px;
-  border-radius:16px;
-}
-
-button{
-  background:linear-gradient(90deg,#ff8c00,#ff0066);
-  border:none;
-  padding:10px 16px;
-  color:#fff;
-  border-radius:8px;
-  margin:6px;
-  cursor:pointer;
-}
-
-input{
-  width:90%;
-  padding:8px;
-  margin-top:6px;
-  border-radius:6px;
-  border:none;
-}
+#quizPanel{margin:30px auto;width:90%;max-width:750px;padding:20px;background:rgba(255,255,255,0.15);border-radius:12px}
+button{padding:10px;margin:6px;border:none;border-radius:8px;background:#ff0066;color:white}
+input{padding:8px;margin:5px;width:90%}
 </style>
 </head>
 <body>
 
 <div id="quizPanel">
-<h3>🌺 विषय चुनें:</h3>
-
+<h3>विषय चुनें</h3>
 <button onclick="openSubject('इतिहास')">इतिहास</button>
 <button onclick="openSubject('विज्ञान')">विज्ञान</button>
 <button onclick="openSubject('सामान्य ज्ञान')">सामान्य ज्ञान</button>
-
 <br><br>
-<button onclick="location.href='dashboard_B.html'">
-🧩 Panel-B (नया टॉपिक जोड़ें)
-</button>
+<button onclick="location.href='dashboard_B.html'">🧩 Topic Builder</button>
 </div>
 
 <script>
-const fixedTopics={
+const fixedMain={
 "इतिहास":["प्राचीन भारत","मध्यकालीन भारत","आधुनिक भारत"],
 "विज्ञान":["भौतिकी","रसायन विज्ञान","जीव विज्ञान"],
 "सामान्य ज्ञान":["भारत","विश्व","खेल"]
 };
 
-function getTopics(sub){
-const custom=JSON.parse(localStorage.getItem("custom_"+sub)||"[]");
-return [...fixedTopics[sub],...custom];
+function getMain(subject){
+return [...fixedMain[subject],...(JSON.parse(localStorage.getItem("main_"+subject)||"[]"))];
 }
 
 function openSubject(sub){
-let html=`<h3>${sub} — टॉपिक चुनें</h3>`;
-getTopics(sub).forEach(t=>{
-html+=`<button onclick="openTopic('${sub}','${t}')">${t}</button>`;
+let html=`<h3>${sub} — Main Topic</h3>`;
+getMain(sub).forEach(m=>{
+html+=`<button onclick="openMain('${sub}','${m}')">${m}</button>`;
 });
-html+=`<br><button onclick="location.reload()">⬅️ वापस</button>`;
+html+=`<br><button onclick="location.reload()">⬅️</button>`;
 quizPanel.innerHTML=html;
 }
 
-function openTopic(sub,topic){
+function openMain(sub,main){
+let subs=JSON.parse(localStorage.getItem("sub_"+sub+"_"+main)||"[]");
+let html=`<h3>${main} — Sub Topics</h3>`;
+subs.forEach(s=>{
+html+=`<button onclick="openSub('${sub}','${main}','${s}')">${s}</button>`;
+});
+html+=`<br><button onclick="openSubject('${sub}')">⬅️</button>`;
+quizPanel.innerHTML=html;
+}
+
+function openSub(sub,main,topic){
 quizPanel.innerHTML=`
 <h3>${topic}</h3>
-
-<button onclick="addOne('${sub}','${topic}')">➕ One-liner जोड़ें</button>
-<button onclick="viewOne('${sub}','${topic}')">👀 One-liner देखें</button>
+<button onclick="addOne('${sub}','${main}','${topic}')">➕ One-liner</button>
+<button onclick="viewOne('${sub}','${main}','${topic}')">👀 One-liner</button>
 <br>
-<button onclick="addQuiz('${sub}','${topic}')">➕ Quiz जोड़ें</button>
-<button onclick="viewQuiz('${sub}','${topic}')">👀 Quiz देखें</button>
+<button onclick="addQuiz('${sub}','${main}','${topic}')">➕ Quiz</button>
+<button onclick="viewQuiz('${sub}','${main}','${topic}')">👀 Quiz</button>
 <br><br>
-<button onclick="openSubject('${sub}')">⬅️ वापस</button>
+<button onclick="openMain('${sub}','${main}')">⬅️</button>
 `;
 }
 
-/* ================= ONE LINER ================= */
-
-function addOne(sub,topic,index=null){
-let qVal="",aVal="",btn="सेव";
-
-if(index!==null){
-let arr=JSON.parse(localStorage.getItem(sub+topic+"one")||"[]");
-qVal=arr[index].q;
-aVal=arr[index].a;
-btn="अपडेट";
+/* ONE LINER EDIT ENABLED */
+function addOne(sub,main,topic,i=null){
+let qv="",av="",btn="सेव";
+if(i!==null){
+let arr=JSON.parse(localStorage.getItem(sub+main+topic+"one")||"[]");
+qv=arr[i].q;av=arr[i].a;btn="अपडेट";
 }
-
 quizPanel.innerHTML=`
-<h3>One-liner जोड़ें</h3>
-<input id="q" value="${qVal}" placeholder="प्रश्न:">
-<input id="a" value="${aVal}" placeholder="उत्तर:">
-<button onclick="saveOne('${sub}','${topic}',${index})">${btn}</button>
-`;
+<h3>One-liner</h3>
+<input id=q value="${qv}" placeholder="प्रश्न">
+<input id=a value="${av}" placeholder="उत्तर">
+<button onclick="saveOne('${sub}','${main}','${topic}',${i})">${btn}</button>`;
 }
 
-function saveOne(sub,topic,index){
-let key=sub+topic+"one";
+function saveOne(sub,main,topic,i){
+let key=sub+main+topic+"one";
 let arr=JSON.parse(localStorage.getItem(key)||"[]");
-
-let data={q:q.value,a:a.value};
-
-if(index===null || index===undefined){
-arr.push(data);
-}else{
-arr[index]=data;
-}
-
+let d={q:q.value,a:a.value};
+if(i==null)arr.push(d);else arr[i]=d;
 localStorage.setItem(key,JSON.stringify(arr));
-alert("सेव हो गया");
-openTopic(sub,topic);
+openSub(sub,main,topic);
 }
 
-function viewOne(sub,topic){
-let key=sub+topic+"one";
+function viewOne(sub,main,topic){
+let key=sub+main+topic+"one";
 let arr=JSON.parse(localStorage.getItem(key)||"[]");
-
 let html="<h3>One-liners</h3>";
-
 arr.forEach((x,i)=>{
-html+=`
-<p>
-<b>प्रश्न:</b> ${x.q}<br>
-<b>उत्तर:</b> ${x.a}<br>
-<button onclick="addOne('${sub}','${topic}',${i})">✏️ संशोधन</button>
-</p><hr>`;
+html+=`<p>${x.q}<br>${x.a}<br>
+<button onclick="addOne('${sub}','${main}','${topic}',${i})">✏️</button></p><hr>`;
 });
-
-html+=`<button onclick="openTopic('${sub}','${topic}')">⬅️ वापस</button>`;
 quizPanel.innerHTML=html;
 }
 
-/* ================= QUIZ ================= */
-
-function addQuiz(sub,topic,index=null){
-
-let data={q:"",A:"",B:"",C:"",D:"",ans:"",exp:""};
-let btn="सेव";
-
-if(index!==null){
-let arr=JSON.parse(localStorage.getItem(sub+topic+"quiz")||"[]");
-data=arr[index];
-btn="अपडेट";
+/* QUIZ EDIT ENABLED */
+function addQuiz(sub,main,topic,i=null){
+let d={q:"",A:"",B:"",C:"",D:"",ans:"",exp:""},btn="सेव";
+if(i!==null){
+let arr=JSON.parse(localStorage.getItem(sub+main+topic+"quiz")||"[]");
+d=arr[i];btn="अपडेट";
 }
-
 quizPanel.innerHTML=`
-<h3>Quiz जोड़ें</h3>
-
-<input id="q" value="${data.q}" placeholder="प्रश्न:">
-<input id="a1" value="${data.A}" placeholder="(A)">
-<input id="a2" value="${data.B}" placeholder="(B)">
-<input id="a3" value="${data.C}" placeholder="(C)">
-<input id="a4" value="${data.D}" placeholder="(D)">
-<input id="ans" value="${data.ans}" placeholder="उत्तर:">
-<input id="exp" value="${data.exp}" placeholder="व्याख्या:">
-
-<button onclick="saveQuiz('${sub}','${topic}',${index})">${btn}</button>
-`;
+<h3>Quiz</h3>
+<input id=q value="${d.q}" placeholder="प्रश्न">
+<input id=a1 value="${d.A}" placeholder="A">
+<input id=a2 value="${d.B}" placeholder="B">
+<input id=a3 value="${d.C}" placeholder="C">
+<input id=a4 value="${d.D}" placeholder="D">
+<input id=ans value="${d.ans}" placeholder="उत्तर">
+<input id=exp value="${d.exp}" placeholder="व्याख्या">
+<button onclick="saveQuiz('${sub}','${main}','${topic}',${i})">${btn}</button>`;
 }
 
-function saveQuiz(sub,topic,index){
-let key=sub+topic+"quiz";
+function saveQuiz(sub,main,topic,i){
+let key=sub+main+topic+"quiz";
 let arr=JSON.parse(localStorage.getItem(key)||"[]");
-
-let data={
-q:q.value,
-A:a1.value,
-B:a2.value,
-C:a3.value,
-D:a4.value,
-ans:ans.value,
-exp:exp.value
-};
-
-if(index===null || index===undefined){
-arr.push(data);
-}else{
-arr[index]=data;
-}
-
+let d={q:q.value,A:a1.value,B:a2.value,C:a3.value,D:a4.value,ans:ans.value,exp:exp.value};
+if(i==null)arr.push(d);else arr[i]=d;
 localStorage.setItem(key,JSON.stringify(arr));
-alert("Quiz सेव");
-openTopic(sub,topic);
+openSub(sub,main,topic);
 }
 
-function viewQuiz(sub,topic){
-let key=sub+topic+"quiz";
+function viewQuiz(sub,main,topic){
+let key=sub+main+topic+"quiz";
 let arr=JSON.parse(localStorage.getItem(key)||"[]");
-
 let html="<h3>Quiz</h3>";
-
 arr.forEach((x,i)=>{
-html+=`
-<p>
-<b>प्रश्न:</b> ${x.q}<br>
-(A) ${x.A}<br>
-(B) ${x.B}<br>
-(C) ${x.C}<br>
-(D) ${x.D}<br>
-<b>उत्तर:</b> ${x.ans}<br>
-<b>व्याख्या:</b> ${x.exp}<br>
-<button onclick="addQuiz('${sub}','${topic}',${i})">✏️ संशोधन</button>
-</p><hr>`;
+html+=`<p>${x.q}<br>(A)${x.A}<br>(B)${x.B}<br>(C)${x.C}<br>(D)${x.D}<br>
+उत्तर:${x.ans}<br>${x.exp}
+<br><button onclick="addQuiz('${sub}','${main}','${topic}',${i})">✏️</button></p><hr>`;
 });
-
-html+=`<button onclick="openTopic('${sub}','${topic}')">⬅️ वापस</button>`;
 quizPanel.innerHTML=html;
 }
 </script>
-
 </body>
 </html>
