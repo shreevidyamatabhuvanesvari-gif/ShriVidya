@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>🪷 गुरु प्रवेश — ShriVidya Admin Panel</title>
+
+<style>
+  body {
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    background: linear-gradient(135deg, #0a0a0a, #1b1b1b);
+    color: #ffd700;
+    text-align: center;
+    padding: 30px;
+  }
+
+  input {
+    padding: 12px;
+    width: 70%;
+    border-radius: 8px;
+    border: 1px solid #ffd700;
+    margin-top: 10px;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    background: linear-gradient(90deg, #ffb347, #ffd700);
+    border: none;
+    border-radius: 6px;
+    color: #000;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  #loginStatus {
+    margin-top: 20px;
+    color: #ffd;
+  }
+</style>
+</head>
+<body>
+
+<h2>🌺 श्रीविद्या App — गुरु प्रवेश</h2>
+<p>कृपया अपनी पहचान कुंजी दर्ज करें:</p>
+
+<input type="password" id="guruKeyInput" placeholder="अपनी गुरु कुंजी लिखें" />
+<br>
+
+<button onclick="verifyGuruLogin()">🔐 प्रवेश करें</button>
+<button onclick="changePassword()">🔁 पासवर्ड बदलें</button>
+<button onclick="startVoiceLogin()">🎙️ वॉयस से लॉगिन करें</button>
+
+<p id="loginStatus"></p>
+
+<script>
+/* ===============================
+   🔐 Single Changeable Password System
+   =============================== */
+
+// पहली बार default password सेट
+if (!localStorage.getItem("guruPassword")) {
+  localStorage.setItem("guruPassword", "AnujKumar@6961");
+}
+
+function getPassword() {
+  return localStorage.getItem("guruPassword");
+}
+
+// 🔐 Login
+function verifyGuruLogin() {
+  const entered = document.getElementById("guruKeyInput").value.trim();
+  const status = document.getElementById("loginStatus");
+
+  if (entered === getPassword()) {
+    status.innerText = "✅ गुरु पहचान सत्यापित — प्रवेश स्वीकृत।";
+    setTimeout(() => {
+      window.location.href = "dashboard.html";
+    }, 1000);
+  } else {
+    status.innerText = "❌ गलत कुंजी — पुनः प्रयास करें।";
+  }
+}
+
+// 🔁 Change Password
+function changePassword() {
+  const oldPass = prompt("पुराना पासवर्ड दर्ज करें:");
+  if (oldPass !== getPassword()) {
+    alert("❌ पुराना पासवर्ड गलत है");
+    return;
+  }
+
+  const newPass = prompt("नया पासवर्ड दर्ज करें:");
+  if (!newPass || newPass.length < 4) {
+    alert("पासवर्ड कम से कम 4 अक्षरों का हो");
+    return;
+  }
+
+  localStorage.setItem("guruPassword", newPass);
+  alert("✅ पासवर्ड सफलतापूर्वक बदल दिया गया");
+}
+
+// 🎙️ Voice Login
+function startVoiceLogin() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    alert("Voice Login समर्थित नहीं है।");
+    return;
+  }
+
+  const recog = new SpeechRecognition();
+  recog.lang = "hi-IN";
+
+  recog.onresult = (event) => {
+    const text = event.results[0][0].transcript.trim();
+
+    if (text.includes("ॐ श्री गणेशाय नमः")) {
+      document.getElementById("guruKeyInput").value = getPassword();
+      document.getElementById("loginStatus").innerText = "🌸 वाणी पहचान सत्यापित — प्रवेश स्वीकृत।";
+      setTimeout(() => {
+        window.location.href = "dashboard.html";
+      }, 1200);
+    } else {
+      document.getElementById("loginStatus").innerText = "❌ वाणी मान्य नहीं";
+    }
+  };
+
+  recog.start();
+  alert("कृपया बोलें: ॐ श्री गणेशाय नमः");
+}
+</script>
+
+</body>
+</html>
