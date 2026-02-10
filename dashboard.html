@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🪷 श्रीविद्या शिक्षण पैनल</title>
+
+  <style>
+    body {
+      background: linear-gradient(135deg, #220033, #550077, #220033);
+      font-family: 'Noto Sans Devanagari', sans-serif;
+      color: #fff;
+      margin: 0;
+      text-align: center;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 15px;
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    h1 {
+      margin: 10px 0;
+      font-size: 26px;
+      color: #ffda79;
+      text-shadow: 0 0 8px #ffb347;
+    }
+
+    #quizPanel {
+      background: rgba(255, 255, 255, 0.15);
+      margin: 30px auto;
+      width: 90%;
+      max-width: 700px;
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 0 15px rgba(255,255,255,0.3);
+      backdrop-filter: blur(12px);
+      transition: all 0.4s ease;
+    }
+
+    button {
+      background: linear-gradient(90deg, #ff8c00, #ff0066);
+      border: none;
+      padding: 12px 20px;
+      color: #fff;
+      font-size: 16px;
+      border-radius: 10px;
+      margin: 8px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    button:hover {
+      background: linear-gradient(90deg, #ffb347, #ff3366);
+      transform: scale(1.05);
+    }
+
+    footer {
+      margin-top: 50px;
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>🪷 श्रीविद्या शिक्षण पैनल — सखिवाणी</h1>
+    <p>ज्ञान, साधना और सिद्धि का संगम 🌼</p>
+  </header>
+
+  <!-- 🌸 Quiz Panel Container -->
+  <div id="quizPanel">
+    <h3>🌺 कृपया कोई विषय चुनें:</h3>
+    <button onclick="ShriVidyaPanel.chooseSubject('इतिहास')">इतिहास</button>
+    <button onclick="ShriVidyaPanel.chooseSubject('विज्ञान')">विज्ञान</button>
+    <button onclick="ShriVidyaPanel.chooseSubject('सामान्य ज्ञान')">सामान्य ज्ञान</button>
+  </div>
+
+  <footer>
+    <p>© 2025 ShriVidya — SakhiVani Intelligent Learning Console</p>
+  </footer>
+
+  <!-- 🌿 Core & Voice Scripts -->
+  <script src="scripts/swarVivek.js"></script>
+  <script src="scripts/ShriVidya_SakhiVaniPanel.js"></script>
+
+  <!-- 🌺 Voice Auto-Wake System -->
+<script src="scripts/voiceAutoWake.js"></script>
+
+<!-- 🌺 Secure Dashboard Protection -->
+<script src="scripts/secureDashboard.js"></script>
+
+<!-- 🎙️ Voice Reset System -->
+<script src="scripts/VoiceReset.js"></script>
+
+</body>
+</html>
