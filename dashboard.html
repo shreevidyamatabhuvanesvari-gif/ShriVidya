@@ -58,12 +58,19 @@
       transform: scale(1.05);
     }
 
+    input {
+      padding: 8px;
+      margin-top: 6px;
+      width: 90%;
+      border-radius: 6px;
+      border: none;
+    }
+
     footer {
       margin-top: 50px;
       font-size: 14px;
       opacity: 0.8;
     }
-
   </style>
 </head>
 <body>
@@ -76,27 +83,103 @@
   <!-- 🌸 Quiz Panel Container -->
   <div id="quizPanel">
     <h3>🌺 कृपया कोई विषय चुनें:</h3>
-    <button onclick="ShriVidyaPanel.chooseSubject('इतिहास')">इतिहास</button>
-    <button onclick="ShriVidyaPanel.chooseSubject('विज्ञान')">विज्ञान</button>
-    <button onclick="ShriVidyaPanel.chooseSubject('सामान्य ज्ञान')">सामान्य ज्ञान</button>
+    <button onclick="openSubject('इतिहास')">इतिहास</button>
+    <button onclick="openSubject('विज्ञान')">विज्ञान</button>
+    <button onclick="openSubject('सामान्य ज्ञान')">सामान्य ज्ञान</button>
   </div>
 
   <footer>
     <p>© 2025 ShriVidya — SakhiVani Intelligent Learning Console</p>
   </footer>
 
+<script>
+/* ===============================
+   SUBJECT → TOPIC SYSTEM
+   =============================== */
+
+const TopicDB = {
+  "इतिहास": [
+    "प्राचीन भारत",
+    "मध्यकालीन भारत",
+    "आधुनिक भारत",
+    "विश्व इतिहास"
+  ],
+  "विज्ञान": [
+    "भौतिकी",
+    "रसायन विज्ञान",
+    "जीव विज्ञान",
+    "अंतरिक्ष विज्ञान"
+  ],
+  "सामान्य ज्ञान": [
+    "भारत",
+    "विश्व",
+    "खेल",
+    "संविधान"
+  ]
+};
+
+function openSubject(subject) {
+  const panel = document.getElementById("quizPanel");
+
+  let html = `<h3>📚 ${subject} — टॉपिक सूची</h3>`;
+
+  TopicDB[subject].forEach(topic => {
+    html += `
+      <div style="margin:15px; padding:12px; background:rgba(255,255,255,0.1); border-radius:10px;">
+        <h4>📌 ${topic}</h4>
+
+        <input id="${topic}-one" placeholder="वन लाइनर प्रश्नोत्तर लिखें">
+        <br>
+
+        <input id="${topic}-quiz" placeholder="क्विज प्रश्न लिखें">
+        <br>
+
+        <button onclick="saveOneLiner('${topic}')">💾 One-Liner सेव</button>
+        <button onclick="saveQuiz('${topic}')">🧠 Quiz सेव</button>
+        <button onclick="editTopic('${topic}')">✏️ संशोधन</button>
+      </div>
+    `;
+  });
+
+  html += `<br><button onclick="location.reload()">⬅️ वापस जाएं</button>`;
+  panel.innerHTML = html;
+}
+
+function saveOneLiner(topic) {
+  const val = document.getElementById(topic + "-one").value;
+  localStorage.setItem(topic + "_one", val);
+  alert("One-liner सेव हो गया");
+}
+
+function saveQuiz(topic) {
+  const val = document.getElementById(topic + "-quiz").value;
+  localStorage.setItem(topic + "_quiz", val);
+  alert("Quiz सेव हो गया");
+}
+
+function editTopic(topic) {
+  const one = localStorage.getItem(topic + "_one") || "";
+  const quiz = localStorage.getItem(topic + "_quiz") || "";
+
+  document.getElementById(topic + "-one").value = one;
+  document.getElementById(topic + "-quiz").value = quiz;
+
+  alert("पुराना डेटा लोड हो गया — अब संशोधन करें");
+}
+</script>
+
   <!-- 🌿 Core & Voice Scripts -->
   <script src="scripts/swarVivek.js"></script>
   <script src="scripts/ShriVidya_SakhiVaniPanel.js"></script>
 
   <!-- 🌺 Voice Auto-Wake System -->
-<script src="scripts/voiceAutoWake.js"></script>
+  <script src="scripts/voiceAutoWake.js"></script>
 
-<!-- 🌺 Secure Dashboard Protection -->
-<script src="scripts/secureDashboard.js"></script>
+  <!-- 🌺 Secure Dashboard Protection -->
+  <script src="scripts/secureDashboard.js"></script>
 
-<!-- 🎙️ Voice Reset System -->
-<script src="scripts/VoiceReset.js"></script>
+  <!-- 🎙️ Voice Reset System -->
+  <script src="scripts/VoiceReset.js"></script>
 
 </body>
 </html>
