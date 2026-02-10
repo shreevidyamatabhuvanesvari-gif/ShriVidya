@@ -2,92 +2,51 @@
 <html lang="hi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🧩 Topic Builder</title>
-
-<style>
-body{
-background:#220033;
-color:white;
-font-family:'Noto Sans Devanagari',sans-serif;
-text-align:center;
-padding:20px;
-}
-
-input{
-padding:10px;
-width:70%;
-margin:10px;
-border-radius:8px;
-border:none;
-}
-
-button{
-padding:10px 16px;
-margin:6px;
-border:none;
-border-radius:8px;
-background:#ff8c00;
-color:white;
-}
-</style>
+<title>Topic Builder</title>
 </head>
-<body>
+<body style="background:#220033;color:white;text-align:center;font-family:sans-serif">
 
-<h2>🧩 नया टॉपिक जोड़ें</h2>
-
-<select id="subject">
+<h3>Main Topic जोड़ें</h3>
+<select id="subj">
 <option>इतिहास</option>
 <option>विज्ञान</option>
 <option>सामान्य ज्ञान</option>
 </select>
 <br>
-
-<input id="topicName" placeholder="नया टॉपिक नाम लिखें">
-
+<input id="mainName" placeholder="Main Topic नाम">
 <br>
-<button onclick="addTopic()">टॉपिक जोड़ें</button>
-<button onclick="goBack()">⬅️ Panel-A</button>
+<button onclick="addMain()">Add Main</button>
 
-<h3>मौजूदा Custom Topics</h3>
-<div id="list"></div>
+<h3>Sub Topic जोड़ें</h3>
+<input id="mainForSub" placeholder="Main Topic नाम">
+<input id="subName" placeholder="Sub Topic नाम">
+<br>
+<button onclick="addSub()">Add Sub Topic</button>
+
+<br><br>
+<button onclick="location.href='dashboard_A.html'">⬅️ Panel-A</button>
 
 <script>
-function addTopic(){
-let sub=subject.value;
-let t=topicName.value.trim();
-
-if(!t)return alert("नाम लिखें");
-
-let key="custom_"+sub;
+function addMain(){
+let s=subj.value;
+let m=mainName.value;
+let key="main_"+s;
 let arr=JSON.parse(localStorage.getItem(key)||"[]");
-
-arr.push(t);
+arr.push(m);
 localStorage.setItem(key,JSON.stringify(arr));
-
-alert("Topic add हो गया");
-topicName.value="";
-showList();
+alert("Main Topic added");
 }
 
-function showList(){
-let html="";
-["इतिहास","विज्ञान","सामान्य ज्ञान"].forEach(s=>{
-let arr=JSON.parse(localStorage.getItem("custom_"+s)||"[]");
-if(arr.length){
-html+=`<h4>${s}</h4>`;
-arr.forEach(x=>html+=`<p>${x}</p>`);
+function addSub(){
+let s=subj.value;
+let m=mainForSub.value;
+let sub=subName.value;
+let key="sub_"+s+"_"+m;
+let arr=JSON.parse(localStorage.getItem(key)||"[]");
+arr.push(sub);
+localStorage.setItem(key,JSON.stringify(arr));
+alert("Sub Topic added");
 }
-});
-list.innerHTML=html;
-}
-
-function goBack(){
-location.href="dashboard_A.html";
-}
-
-showList();
 </script>
-
 </body>
 </html>
